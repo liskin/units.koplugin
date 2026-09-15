@@ -24,8 +24,8 @@ local CATEGORIES_EMOJI = {
     length = "📏",
     weight = "⚖",
     temp = "🌡",
-    volume = "🥛",
-    speed = "🏃",
+    volume = "🫗",
+    speed = "🏎",
     area = "🗺",
 }
 
