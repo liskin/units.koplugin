@@ -1,4 +1,5 @@
 local Device = require("device")
+local Font = require("ui/font")
 local InfoMessage = require("ui/widget/infomessage")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
@@ -28,12 +29,21 @@ local CATEGORIES_EMOJI = {
     area = "🗺",
 }
 
+local has_emoji_font = false
+for _, font in ipairs(Font.fallbacks) do
+    if font:find("Emoji") then
+        has_emoji_font = true
+        break
+    end
+end
+
 local function convert(text)
     local matches = xray_units.detectMeasurements(text)
     if matches and #matches > 0 then
         local lines = {}
         for _, match in ipairs(matches) do
-            local line = CATEGORIES_EMOJI[match.category] .. " " .. match.original .. " = " .. match.converted
+            local category = has_emoji_font and CATEGORIES_EMOJI[match.category] or "[" .. match.category .. "]"
+            local line = category .. " " .. match.original .. " = " .. match.converted
             table.insert(lines, line)
         end
         return table.concat(lines, "\n")
@@ -50,7 +60,7 @@ function Units:addToHighlightDialog()
                 -- 'this' is self.ui.highlight. Do as ReaderHighlight:saveHighlight() does.
                 this:highlightFromHoldPos()
                 if not this.selected_text  then return end
-                local text = util.cleanupSelectedText(text or this.selected_text.text)
+                local text = util.cleanupSelectedText(this.selected_text.text)
                 if Device:hasClipboard() then -- let the text to be reused via menu
                     Device.input.setClipboardText(text)
                 end
