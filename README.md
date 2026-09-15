@@ -3,6 +3,7 @@
 This plugin is an extremely lightweight alternative to [xray.koplugin][] or [foot-cream][]
 — converts units in highlighted (selected) text, and nothing else.
 
+- works in all document formats (PDF, epub, perhaps even djvu if you can select text in it)
 - no background scanning
 - no online features
   - no sending all your books to AI
