@@ -24,6 +24,7 @@ Internally, it uses the logic from [xray.koplugin][].
 
 [xray.koplugin]: https://github.com/ultimatejimmy/xray.koplugin
 [foot-cream]: https://github.com/Fank1/foot-cream
+[unitlens.koplugin]: https://github.com/farengeyt451/unitlens.koplugin
 
 ## FAQ
 
@@ -58,4 +59,5 @@ Conversion bugs need to be fixed there first, then it can be updated here.
 
 Possibly worth implementing:
 language/locale support (provided `xray_units.lua` can make use of it);
-settings menu (direction and language).
+settings menu (direction and language);
+reference for manual conversion (like [unitlens.koplugin]).
