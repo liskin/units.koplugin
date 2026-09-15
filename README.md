@@ -42,6 +42,13 @@ Because xray.koplugin doesn't. There's a workaround, though:
 
 Should work for any other unit that isn't recognised, such as "sqft" without the space.
 
+> No emojis for categories.
+
+KOReader doesn't have an emoji font by default.
+Install [Noto Emoji][] and enable it in UI fallback fonts.
+
+[Noto Emoji]: https://fonts.google.com/noto/specimen/Noto+Emoji
+
 > Is this actively maintained? Do you accept contributions?
 
 Not really, I don't want more features, and
