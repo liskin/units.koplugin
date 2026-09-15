@@ -3,6 +3,7 @@ local InfoMessage = require("ui/widget/infomessage")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local util = require("util")
+local xray_units = require("xray_units")
 local _ = require("gettext")
 
 local Units = WidgetContainer:extend{
@@ -15,6 +16,29 @@ function Units:init()
     end
     if Device:hasClipboard() then
         self.ui.menu:registerToMainMenu(self)
+    end
+end
+
+local CATEGORIES_EMOJI = {
+    length = "📏",
+    weight = "⚖",
+    temp = "🌡",
+    volume = "🥛",
+    speed = "🏃",
+    area = "🗺",
+}
+
+local function convert(text)
+    local matches = xray_units.detectMeasurements(text)
+    if matches and #matches > 0 then
+        local lines = {}
+        for _, match in ipairs(matches) do
+            local line = CATEGORIES_EMOJI[match.category] .. " " .. match.original .. " = " .. match.converted
+            table.insert(lines, line)
+        end
+        return table.concat(lines, "\n")
+    else
+        return "Nothing to convert."
     end
 end
 
@@ -31,9 +55,7 @@ function Units:addToHighlightDialog()
                     Device.input.setClipboardText(text)
                 end
 
-                -- TODO: convert
-
-                UIManager:show(InfoMessage:new{ text = text })
+                UIManager:show(InfoMessage:new{ text = convert(text) })
                 this:onClose(false)
             end,
         }
@@ -45,10 +67,7 @@ function Units:addToMainMenu(menu_items)
         text = _("Convert units from clipboard"),
         callback = function()
             local text = util.cleanupSelectedText(Device.input.getClipboardText())
-
-            -- TODO: convert
-
-            UIManager:show(InfoMessage:new{ text = text })
+            UIManager:show(InfoMessage:new{ text = convert(text) })
         end,
     }
 end
