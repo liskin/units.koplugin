@@ -1,0 +1,44 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 #v5.0.0
+        id: release
+
+  release-asset:
+    needs: release-please
+    if: needs.release-please.outputs.release_created
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
+        with:
+          ref: refs/tags/${{ needs.release-please.outputs.tag_name }}
+          persist-credentials: true
+      - name: Upload zip asset
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          set -ex
+
+          plugin="${GITHUB_REPOSITORY#*/}"
+          [[ "$plugin" ]]
+
+          zip -r "$plugin"-"$TAG_NAME".zip "$plugin"/
+          gh release upload "$TAG_NAME" "$plugin"-"$TAG_NAME".zip
