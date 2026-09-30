@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.1](https://github.com/liskin/units.koplugin/compare/v1.0.0...v1.0.1) (2026-09-30)
+
+
+### Bug Fixes
+
+* Update xray_units.lua (https://github.com/ultimatejimmy/xray.koplugin/issues/132) ([383898f](https://github.com/liskin/units.koplugin/commit/383898f9d1452160d0e0bccf3b2ed0d3665e952c))
+
+
+### Other
+
+* Fix recipe for updating xray_units.lua ([aba4bb9](https://github.com/liskin/units.koplugin/commit/aba4bb975bacbf4dbc80e101cdd3170dda1bb0e7))
+* Justfile recipe for updating xray_units.lua ([0eefb0f](https://github.com/liskin/units.koplugin/commit/0eefb0f5888060710c33e2bfec0485b6b9886192))
+
 ## 1.0.0 (2026-09-16)
 
 
