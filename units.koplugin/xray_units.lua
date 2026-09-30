@@ -1,4 +1,4 @@
--- source: https://github.com/ultimatejimmy/xray.koplugin/blob/5d6a9684a4b0c801a7aa5f00132bcac0beed8857/xray.koplugin/xray_units.lua
+-- source: https://github.com/ultimatejimmy/xray.koplugin/blob/28e4115ae09e42677d31e220f368ac65b9dee72f/xray.koplugin/xray_units.lua
 -- SPDX-License-Identifier: MIT
 -- Copyright (c) 2026 Jimmy Pautz
 
@@ -963,7 +963,7 @@ function M.detectMeasurements(text, direction, enabled_categories, current_lang)
 
     -- Pre-calculate present connectors in text_lower for fast range matching
     local active_connectors = {}
-    local all_connectors = { "to", "or", "and", "-", "–", "—", ",", "до", "или", "и", "або", "bis", "oder", "und", "à", "ou", "et", "a", "o", "y", "e" }
+    local all_connectors = { "to", "or", "and", "-", "–", "—", "до", "или", "и", "або", "bis", "oder", "und", "à", "ou", "et", "a", "o", "y", "e" }
     for _, conn in ipairs(all_connectors) do
         if text_lower:find(conn, 1, true) then
             table.insert(active_connectors, conn)
@@ -1039,9 +1039,13 @@ function M.detectMeasurements(text, direction, enabled_categories, current_lang)
                                             converted = conv_str,
                                             category = u.category
                                         })
+                                        init = e + 1
+                                    else
+                                        init = s + 1
                                     end
+                                else
+                                    init = s + 1
                                 end
-                                init = e + 1
                             end
                             
                             -- Range patterns (only run on connectors actually present in text_lower)
@@ -1062,7 +1066,7 @@ function M.detectMeasurements(text, direction, enabled_categories, current_lang)
                                         end
                                         if ok_boundary and not is_word_char_at(text_lower, e + 1) then
                                             local is_range = true
-                                            if is_word and is_tens[r1] and is_units[r2] and not text_lower:sub(s, e):find("%s+to%s") and not text_lower:sub(s, e):find("%s+or%s") and not text_lower:sub(s, e):find("%s+and%s") and not text_lower:sub(s, e):find(",") then
+                                            if is_word and is_tens[r1] and is_units[r2] and not text_lower:sub(s, e):find("%s+to%s") and not text_lower:sub(s, e):find("%s+or%s") and not text_lower:sub(s, e):find("%s+and%s") then
                                                 is_range = false
                                             end
                                             if is_range then
@@ -1070,12 +1074,19 @@ function M.detectMeasurements(text, direction, enabled_categories, current_lang)
                                                 local val2 = parseNumberText(r2)
                                                 if val1 and val2 then
                                                     local conv_raw1 = M.convert(val1, u.category, u.name, u.std_target)
-                                                    local conv_val1, conv_unit = applySmartScaling(conv_raw1, u.category, u.std_target)
+                                                    local conv_val1, conv_unit1 = applySmartScaling(conv_raw1, u.category, u.std_target)
                                                     local conv_raw2 = M.convert(val2, u.category, u.name, u.std_target)
-                                                    local conv_val2 = applySmartScaling(conv_raw2, u.category, u.std_target)
-                                                    if conv_unit == "c" then conv_unit = "°C"
-                                                    elseif conv_unit == "f" then conv_unit = "°F" end
-                                                    local conv_str = M.formatNumber(conv_val1, current_lang) .. "–" .. M.formatNumber(conv_val2, current_lang) .. " " .. M.pluralizeUnit(conv_val2, conv_unit)
+                                                    local conv_val2, conv_unit2 = applySmartScaling(conv_raw2, u.category, u.std_target)
+                                                    if conv_unit1 == "c" then conv_unit1 = "°C"
+                                                    elseif conv_unit1 == "f" then conv_unit1 = "°F" end
+                                                    if conv_unit2 == "c" then conv_unit2 = "°C"
+                                                    elseif conv_unit2 == "f" then conv_unit2 = "°F" end
+                                                    local conv_str
+                                                    if conv_unit1 == conv_unit2 then
+                                                        conv_str = M.formatNumber(conv_val1, current_lang) .. "–" .. M.formatNumber(conv_val2, current_lang) .. " " .. M.pluralizeUnit(conv_val2, conv_unit2)
+                                                    else
+                                                        conv_str = M.formatNumber(conv_val1, current_lang) .. " " .. M.pluralizeUnit(conv_val1, conv_unit1) .. "–" .. M.formatNumber(conv_val2, current_lang) .. " " .. M.pluralizeUnit(conv_val2, conv_unit2)
+                                                    end
                                                     table.insert(results, {
                                                         start_pos = s,
                                                         end_pos = e,
@@ -1092,9 +1103,7 @@ function M.detectMeasurements(text, direction, enabled_categories, current_lang)
                                 
                                 for _, conn in ipairs(active_connectors) do
                                     local d_pat
-                                    if conn == "," then
-                                        d_pat = "([%d%.%,]+)%s*,%s+([%d%.%,]+)%s*(" .. escaped_alias .. ")"
-                                    elseif conn == "-" then
+                                    if conn == "-" then
                                         d_pat = "([%d%.%,]+)%s*-%s*([%d%.%,]+)%s*(" .. escaped_alias .. ")"
                                     elseif conn == "–" or conn == "—" then
                                         d_pat = "([%d%.%,]+)%s*" .. conn .. "%s*([%d%.%,]+)%s*(" .. escaped_alias .. ")"
@@ -1106,12 +1115,7 @@ function M.detectMeasurements(text, direction, enabled_categories, current_lang)
 
                                 if not (alias == "in" or alias == "st" or alias == "m" or alias == "l" or alias == "g") then
                                     for _, conn in ipairs(active_connectors) do
-                                        local w_pat
-                                        if conn == "," then
-                                            w_pat = "([%a\194-\244%d%-]+)%s*,%s+([%a\194-\244%d%-]+)%s*(" .. escaped_alias .. ")"
-                                        else
-                                            w_pat = "([%a\194-\244%d%-]+)%s+" .. conn .. "%s+([%a\194-\244%d%-]+)%s*(" .. escaped_alias .. ")"
-                                        end
+                                        local w_pat = "([%a\194-\244%d%-]+)%s+" .. conn .. "%s+([%a\194-\244%d%-]+)%s*(" .. escaped_alias .. ")"
                                         process_range_pattern(w_pat, true)
                                     end
                                 end
@@ -1199,18 +1203,22 @@ function M.detectMeasurements(text, direction, enabled_categories, current_lang)
                                                             local val1 = band[1] * mult_val
                                                             local val2 = band[2] * mult_val
                                                             local conv_raw1 = M.convert(val1, u.category, u.name, u.std_target)
-                                                            local conv_val1, conv_unit = applySmartScaling(conv_raw1, u.category, u.std_target)
+                                                            local conv_val1, conv_unit1 = applySmartScaling(conv_raw1, u.category, u.std_target)
                                                             local conv_raw2 = M.convert(val2, u.category, u.name, u.std_target)
-                                                            local conv_val2 = applySmartScaling(conv_raw2, u.category, u.std_target)
+                                                            local conv_val2, conv_unit2 = applySmartScaling(conv_raw2, u.category, u.std_target)
                                                             
-                                                            if conv_unit == "c" then conv_unit = "°C"
-                                                            elseif conv_unit == "f" then conv_unit = "°F" end
+                                                            if conv_unit1 == "c" then conv_unit1 = "°C"
+                                                            elseif conv_unit1 == "f" then conv_unit1 = "°F" end
+                                                            if conv_unit2 == "c" then conv_unit2 = "°C"
+                                                            elseif conv_unit2 == "f" then conv_unit2 = "°F" end
                                                             
                                                             local conv_str
                                                             if val1 == val2 then
-                                                                conv_str = "≈" .. M.formatNumber(conv_val1, current_lang) .. " " .. M.pluralizeUnit(conv_val1, conv_unit)
+                                                                conv_str = "≈" .. M.formatNumber(conv_val1, current_lang) .. " " .. M.pluralizeUnit(conv_val1, conv_unit1)
+                                                            elseif conv_unit1 == conv_unit2 then
+                                                                conv_str = "≈" .. M.formatNumber(conv_val1, current_lang) .. "–" .. M.formatNumber(conv_val2, current_lang) .. " " .. M.pluralizeUnit(conv_val2, conv_unit2)
                                                             else
-                                                                conv_str = "≈" .. M.formatNumber(conv_val1, current_lang) .. "–" .. M.formatNumber(conv_val2, current_lang) .. " " .. M.pluralizeUnit(conv_val2, conv_unit)
+                                                                conv_str = "≈" .. M.formatNumber(conv_val1, current_lang) .. " " .. M.pluralizeUnit(conv_val1, conv_unit1) .. "–" .. M.formatNumber(conv_val2, current_lang) .. " " .. M.pluralizeUnit(conv_val2, conv_unit2)
                                                             end
                                                             
                                                             local phrase_start_idx = find_phrase_start(prefix, q)
