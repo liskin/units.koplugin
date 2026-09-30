@@ -10,11 +10,13 @@ help:
 
 [script]
 update-xray:
-	git -C ../xray.koplugin pull
-	new_ref=$(git -C ../xray.koplugin rev-list -1 origin/HEAD -- xray.koplugin/xray_units.lua)
-	old_ref=$(grep -P -o '^-- source:.*/blob/\K[^/]*' units.koplugin/xray_units.lua)
-	git merge-file -L units -L xray_old -L xray_new \
-		units.koplugin/xray_units.lua \
-		<(git -C ../xray.koplugin show "$old_ref":xray.koplugin/xray_units.lua) \
-		<(git -C ../xray.koplugin show "$new_ref":xray.koplugin/xray_units.lua)
-	sed -i -e "s|/blob/$old_ref/|/blob/$new_ref/|" units.koplugin/xray_units.lua
+    git -C ../xray.koplugin pull
+    new_ref=$(git -C ../xray.koplugin rev-list -1 origin/HEAD -- xray.koplugin/xray_units.lua)
+    old_ref=$(grep -P -o '^-- source:.*/blob/\K[^/]*' units.koplugin/xray_units.lua)
+    git -C ../xray.koplugin show "$old_ref":xray.koplugin/xray_units.lua >units.koplugin/xray_units.lua."${old_ref::10}"
+    git -C ../xray.koplugin show "$new_ref":xray.koplugin/xray_units.lua >units.koplugin/xray_units.lua."${new_ref::10}"
+    git merge-file -L units -L xray_old -L xray_new \
+        units.koplugin/xray_units.lua \
+        units.koplugin/xray_units.lua."${old_ref::10}" \
+        units.koplugin/xray_units.lua."${new_ref::10}"
+    sed -i -e "s|/blob/$old_ref/|/blob/$new_ref/|" units.koplugin/xray_units.lua
