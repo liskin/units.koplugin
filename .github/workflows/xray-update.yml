@@ -1,0 +1,110 @@
+name: Update xray
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    # Run every Saturday
+    - cron: '0 3 * * 6'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v7
+        with:
+          path: project
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Clone xray.koplugin
+        uses: actions/checkout@v7
+        with:
+          repository: ultimatejimmy/xray.koplugin
+          path: xray.koplugin
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Set up git user name/email
+        run: |
+          set -ex
+
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Prepare git stuff
+        working-directory: project
+        run: |
+          set -ex
+
+          git remote set-head --auto origin
+          git checkout -b xray-update
+
+      - name: Update xray
+        working-directory: project
+        run: |
+          set -ex
+
+          just update-xray
+
+          # commit if anything changed
+          git diff --quiet --exit-code || git commit -a -m 'chore: Update xray_units.lua'
+
+      - name: Create pull request if anything changed
+        working-directory: project
+        run: |
+          set -ex
+
+          # exit if there were no changes
+          git diff --quiet --exit-code origin/HEAD && exit
+
+          # exit if there's already an xray-update branch with the same contents
+          if git fetch origin xray-update; then
+            git diff --quiet --exit-code FETCH_HEAD && exit
+          fi
+
+          git push -f -u origin xray-update:xray-update
+
+          # open pull request if there isn't one already
+          err=$(
+            gh pr create \
+              --title='chore: Update xray_units.lua' \
+              --body='(automatic PR)' \
+              2>&1
+          ) && ret=$? || ret=$?
+          if (( ret )) && [[ "$err" != *"a pull request for branch"*"already exists:"* ]]; then
+            exit $ret
+          else
+            printf '%s\n' "$err" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Export changes bundle
+        if: |
+          !cancelled()
+        working-directory: project
+        run: |
+          git diff --quiet --exit-code origin/HEAD || git bundle create changes.bundle origin/HEAD..
+
+      - name: Publish changes bundle as artifact
+        if: |
+          !cancelled()
+        uses: actions/upload-artifact@v7
+        with:
+          path: project/changes.bundle
+
+  workflow-keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@v1
