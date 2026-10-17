@@ -1,4 +1,4 @@
--- source: https://github.com/ultimatejimmy/xray.koplugin/blob/7451397b054bd2780246b60ec76d966d7f42b13b/xray.koplugin/xray_units.lua
+-- source: https://github.com/ultimatejimmy/xray.koplugin/blob/a7a4a791256edfb4155f5cf4c25dea9b65e641d1/xray.koplugin/xray_units.lua
 -- SPDX-License-Identifier: MIT
 -- Copyright (c) 2026 Jimmy Pautz
 
@@ -365,7 +365,7 @@ local UNITS = {
         "polegada", "polegadas", "pol", "cal", "cale", "cali", "cala", "calach", "calami", "calom",
         "дюймов", "дюйма", "дюйм", "дюймы", "дюйме", "дюйму", "дюймом", "дюймах", "дюймам", "дюймами",
         "дюймів", "дюймі", "дюйми",
-        "инча", "инчи", "инч", "inča", "inči", "inč",
+        "инча", "инчи", "инч", "инче", "инчу", "инчем", "инчима", "inča", "inči", "inč",
         "hüvelyk", "coll", "inç", "inci", "بوصة", "بوصات", "بوصتين", "英寸", "吋", "インチ"
     } },
     { category = "length", system = "imperial", name = "foot", std_target = "m", aliases = {
@@ -374,7 +374,7 @@ local UNITS = {
         "pé", "pés", "voet", "voeten", "stopa", "stopy", "stóp", "stopie", "stopę", "stopą", "stopami", "stopach", "stop",
         "футов", "фута", "фут", "футы", "футе", "футу", "футом", "футах", "футам", "футами",
         "футів", "футі", "фути",
-        "стопа", "стопе", "стопи", "стопу", "стопом", "stopa", "stope", "stopi",
+        "стопа", "стопе", "стопи", "стопу", "стопом", "стопама", "stopa", "stope", "stopi",
         "láb", "ayak", "kaki", "قدم", "أقدام", "اقدام", "قدمين", "英尺", "呎", "フィート", "フート"
     } },
     { category = "length", system = "imperial", name = "yard", std_target = "m", aliases = {
@@ -383,7 +383,7 @@ local UNITS = {
         "jard", "jardy", "jardów", "jarda", "jardem", "jardzie", "jardach", "jardami",
         "ярдов", "ярда", "ярд", "ярды", "ярде", "ярду", "ярдом", "ярдах", "ярдам", "ярдами",
         "ярдів", "ярді", "ярди",
-        "јарда", "јарди", "јард", "jarda", "jardi", "jard",
+        "јарда", "јарди", "јард", "јарде", "јарду", "јардом", "јардима", "jarda", "jardi", "jard",
         "yard", "yarda", "ياردا", "ياردة", "يارده", "ياردات", "ياردتين", "码", "ヤード"
     } },
     { category = "length", system = "imperial", name = "mile", std_target = "km", aliases = {
@@ -392,7 +392,7 @@ local UNITS = {
         "milha", "milhas", "mijl", "mijlen", "mila", "mile", "mil", "mili", "milę", "milą", "milami", "milach",
         "миль", "мили", "миля", "милю", "миле", "милей", "милею", "милям", "милями", "милях",
         "милі",
-        "миља", "миље", "миљи", "миљом", "миљу", "milja", "milje", "milji",
+        "миља", "миље", "миљи", "миљом", "миљу", "миљама", "milja", "milje", "milji",
         "mérföld", "أميال", "اميال", "ميل", "ميلين", "英里", "哩", "マイル"
     } },
     { category = "length", system = "imperial", name = "league", std_target = "km", aliases = {
@@ -405,7 +405,7 @@ local UNITS = {
     { category = "length", system = "imperial", name = "fathom", std_target = "m", aliases = {
         "fathoms", "fathom", "faden", "klafter", "brazas", "braza", "brasses", "brasse", "braccia", "braccio",
         "braças", "braça", "sążnie", "sążni", "sążeń",
-        "морских саженей", "морской сажени", "морская сажень", "саженей", "сажени", "сажень", "саженям", "саженями", "саженях",
+        "морских саженей", "морской сажени", "морская сажень", "саженей", "сажени", "сажень", "саженям", "саженями", "саженях", "саженью",
         "фатомов", "фатома", "фатом", "фатомы", "фатому", "фатомом", "фатоме", "фатомах",
         "сажнів", "сажні", "сажня", "сажню", "сажнем", "сажням", "сажнями", "сажнях", "фатомів", "фатоми",
         "öl", "kulaç", "depa", "英寻", "㖊", "ファゾム", "尋"
@@ -464,7 +464,7 @@ local UNITS = {
         "funt", "funty", "funtów", "funta", "funtem", "funcie", "funtach", "funtami",
         "фунтов", "фунта", "фунт", "фунты", "фунте", "фунту", "фунтом", "фунтах", "фунтам", "фунтами",
         "фунтів", "фунті",
-        "фунти", "фунте", "фунта", "funti", "funte", "funta",
+        "фунти", "фунте", "фунта", "фунтама", "funti", "funte", "funta",
         "font", "libreler", "libre", "pon", "رطل", "أرطال", "ارطال", "رطلين", "باوندات", "باوند", "磅", "ポンド"
     } },
     { category = "weight", system = "imperial", name = "st", std_target = "kg", aliases = {
@@ -535,7 +535,7 @@ local UNITS = {
     } },
     { category = "volume", system = "imperial", name = "pint", std_target = "ml", aliases = {
         "pints", "pint", "pt",
-        "пинт", "пинты", "пинта", "пинту", "пинте", "пинтой", "пинтами", "пинтах",
+        "пинт", "пинты", "пинта", "пинту", "пинте", "пинтой", "пинтою", "пинтам", "пинтами", "пинтах",
         "пінт", "пінти", "пінта", "пінту", "пінті", "пінтою", "пінтам", "пінтами", "пінтах",
         "pinten", "pinte", "pintes", "pintas", "pinta", "pinte", "pinta", "pinty", "pint",
         "品脱"
@@ -548,9 +548,9 @@ local UNITS = {
     } },
     { category = "volume", system = "imperial", name = "gallon", std_target = "l", aliases = {
         "gallons", "gallon", "gal",
-        "галлонов", "галлона", "галлон", "галлоны", "галлону", "галлоном", "галлоне", "галлонах",
+        "галлонов", "галлона", "галлон", "галлоны", "галлону", "галлоном", "галлоне", "галлонах", "галлонам", "галлонами",
         "галонів", "галона", "галон", "галони", "галонах", "галону", "галоном", "галоні", "галонам", "галонами",
-        "галона", "галони", "галон", "galona", "galoni", "galon",
+        "галона", "галони", "галон", "галоне", "галонима", "galona", "galoni", "galon",
         "gallone", "gallonen", "galón", "galones", "galloni", "galão", "galões", "galonów", "galony", "galonlar",
         "جالونات", "جالون", "غالونات", "غالون", "加仑", "ガロン"
     } },
@@ -582,14 +582,14 @@ local UNITS = {
     { category = "volume", system = "imperial", name = "ft3", std_target = "m³", aliases = {
         "cubic feet", "cubic foot", "ft3", "ft³",
         "кубических футов", "кубического фута", "кубический фут", "кубические футы", "куб. фут", "куб. футов", "фут³", "фут3",
-        "кубічних футів", "кубічний фут", "кубічні фути", "кубічного фута",
+        "кубічних футів", "кубічний фут", "кубічні фути", "кубічного фута", "куб. футів", "куб. фути",
         "kubikfuß", "pieds cubes", "pied cube", "pies cúbicos", "pie cúbico", "piedi cubi", "piede cubo",
         "pés cúbicos", "pé cúbico", "stóp sześciennych", "قدم مكعب", "أقدام مكعبة", "立方英尺", "立方呎", "立方フィート"
     } },
     { category = "volume", system = "imperial", name = "in3", std_target = "cm³", aliases = {
         "cubic inches", "cubic inch", "in3", "in³",
         "кубических дюймов", "кубического дюйма", "кубический дюйм", "кубические дюймы", "куб. дюйм", "дюйм³", "дюйм3",
-        "кубічних дюймів", "кубічний дюйм", "кубічні дюйми", "кубічного дюйма",
+        "кубічних дюймів", "кубічний дюйм", "кубічні дюйми", "кубічного дюйма", "куб. дюймів", "куб. дюйми",
         "kubikzoll", "pouces cubes", "pulgadas cúbicas", "pollici cubi", "polegadas cúbicas", "cali sześciennych",
         "بوصة مكعبة", "立方英寸", "立方吋", "立方インチ"
     } },
@@ -738,10 +738,13 @@ local VAGUE_BANDS = {
     ["пару"] = {2, 2},
     ["пара"] = {2, 2},
     ["пары"] = {2, 2},
+    -- Ukrainian
+    ["декілька"] = {3, 7},
+    ["кілька"] = {3, 7},
 }
 local VAGUE_ORDER = {
     "a couple of", "a couple", "couple of", "several", "a few", "couple", "some", "few",
-    "несколько", "пару", "пара", "пары"
+    "несколько", "пару", "пара", "пары", "декілька", "кілька"
 }
 local VAGUE_MULTIPLIERS = {
     dozen = 12,
@@ -764,12 +767,24 @@ local VAGUE_MULTIPLIERS = {
     ["миллионов"] = 1000000,
     ["миллиона"] = 1000000,
     ["миллион"] = 1000000,
+    -- Ukrainian
+    ["десятків"] = 10,
+    ["дюжини"] = 12,
+    ["сотень"] = 100,
+    ["сотні"] = 100,
+    ["тисяч"] = 1000,
+    ["тисячі"] = 1000,
+    ["тисяча"] = 1000,
+    ["мільйонів"] = 1000000,
+    ["мільйона"] = 1000000,
+    ["мільйон"] = 1000000,
 }
 
 local function detectVagueQuantifier(prev_text)
     if not prev_text then return nil end
     local p = utf8Lower(prev_text):gsub("%s+$", "")
-    local mword = p:match("([%a\194-\244][\128-\191%a%d]*)$")
+    -- Whole last word, including all UTF-8 letters
+    local mword = p:match("([%a\128-\255%d]+)$")
     local mult = mword and VAGUE_MULTIPLIERS[mword]
     if not mult then return nil end
     
@@ -1423,6 +1438,68 @@ function M.pluralizeUnit(val, unit)
     return PLURALS[unit] or unit
 end
 
+local ENGLISH_WRITTEN = {
+    quarter = true, half = true, zero = true, one = true, two = true, three = true, four = true, five = true,
+    six = true, seven = true, eight = true, nine = true, ten = true,
+    eleven = true, twelve = true, thirteen = true, fourteen = true, fifteen = true,
+    sixteen = true, seventeen = true, eighteen = true, nineteen = true, twenty = true,
+    thirty = true, forty = true, fifty = true, sixty = true, seventy = true, eighty = true, ninety = true,
+    hundred = true, thousand = true, million = true,
+}
+
+local function _hash_str(str)
+    local hash = 5381
+    for i = 1, #str do
+        hash = (hash * 33 + str:byte(i)) % 4294967296
+    end
+    return string.format("%08x", hash)
+end
+
+function M.getRuleFingerprint(direction, enabled_categories, lang, scan_written)
+    lang = lang or "en"
+    local l_lower = lang:lower():gsub("%-.*$", "")
+    local aliases = M.getScanAliases(direction, enabled_categories, lang)
+    table.sort(aliases)
+
+    local parts = { "dir:", tostring(direction), "lang:", l_lower }
+    for _, a in ipairs(aliases) do
+        table.insert(parts, a)
+        local u = UNIT_LOOKUP[a]
+        if u and u.name then
+            table.insert(parts, u.name .. ":" .. (u.std_target or ""))
+        end
+    end
+
+    if scan_written ~= false then
+        table.insert(parts, "written:")
+        local words = {}
+        if l_lower == "en" then
+            for word in pairs(ENGLISH_WRITTEN) do
+                local val = WRITTEN_NUMBERS[word]
+                if val then
+                    table.insert(words, word .. "=" .. tostring(val))
+                end
+            end
+        else
+            local is_cyrillic = (l_lower == "ru" or l_lower == "uk" or l_lower == "sr" or l_lower == "bg" or l_lower == "be")
+            for word, val in pairs(WRITTEN_NUMBERS) do
+                local word_is_cyrillic = word:match("[\208\209\210]") ~= nil
+                if is_cyrillic and word_is_cyrillic then
+                    table.insert(words, word .. "=" .. tostring(val))
+                elseif not is_cyrillic and not word_is_cyrillic then
+                    table.insert(words, word .. "=" .. tostring(val))
+                end
+            end
+        end
+        table.sort(words)
+        for _, w in ipairs(words) do
+            table.insert(parts, w)
+        end
+    end
+
+    return _hash_str(table.concat(parts, ";"))
+end
+
 M.UNITS = UNITS
 M.UNIT_LOOKUP = UNIT_LOOKUP
 M.applySmartScaling = applySmartScaling
@@ -1433,3 +1510,4 @@ M.EXCLUDED = {
 }
 
 return M
+
