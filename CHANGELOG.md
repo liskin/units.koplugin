@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.2](https://github.com/liskin/units.koplugin/compare/v1.0.1...v1.0.2) (2026-10-17)
+
+
+### Documentation
+
+* Update maintained status in README ([5edf09b](https://github.com/liskin/units.koplugin/commit/5edf09b07ae8cea2c14ca5e7bf948d3514f4bfc3))
+
+
+### Other
+
+* Add a simple unit/smoke test ([752f2c7](https://github.com/liskin/units.koplugin/commit/752f2c710cdd8e4fd8447ad4ffd00c3769010456))
+* Create xray update PRs periodically ([65a006d](https://github.com/liskin/units.koplugin/commit/65a006dcecba9f89a09931aa5cd65d47eeb8bc5c))
+* Factor convert out of main and test it ([bfae051](https://github.com/liskin/units.koplugin/commit/bfae0517d4bcb3620b5c12a4add647753741d589))
+* Test on push and PR ([9e0c756](https://github.com/liskin/units.koplugin/commit/9e0c7563e1f175bd153c487ab0ca487a80fd1e94))
+* Update xray_units.lua ([a77b37a](https://github.com/liskin/units.koplugin/commit/a77b37a0f47abfb588136846ebff2ac96906266b))
+* Update xray_units.lua ([be1d84d](https://github.com/liskin/units.koplugin/commit/be1d84df314b6bbc62e9c4bcf733995913152684))
+
 ## [1.0.1](https://github.com/liskin/units.koplugin/compare/v1.0.0...v1.0.1) (2026-09-30)
 
 
