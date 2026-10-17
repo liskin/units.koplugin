@@ -4,12 +4,21 @@ local InfoMessage = require("ui/widget/infomessage")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local util = require("util")
-local xray_units = require("xray_units")
+local units = require("units")
 local _ = require("gettext")
 
 local Units = WidgetContainer:extend{
     name = "units",
 }
+
+local function hasEmojiFont()
+    for _, font in ipairs(Font.fallbacks) do
+        if font:find("Emoji") then
+            return true
+        end
+    end
+    return false
+end
 
 function Units:init()
     if self.document then
@@ -18,38 +27,8 @@ function Units:init()
     if Device:hasClipboard() then
         self.ui.menu:registerToMainMenu(self)
     end
-end
 
-local CATEGORIES_EMOJI = {
-    length = "📏",
-    weight = "⚖",
-    temp = "🌡",
-    volume = "🫗",
-    speed = "🏎",
-    area = "🗺",
-}
-
-local has_emoji_font = false
-for _, font in ipairs(Font.fallbacks) do
-    if font:find("Emoji") then
-        has_emoji_font = true
-        break
-    end
-end
-
-local function convert(text)
-    local matches = xray_units.detectMeasurements(text)
-    if matches and #matches > 0 then
-        local lines = {}
-        for _, match in ipairs(matches) do
-            local category = has_emoji_font and CATEGORIES_EMOJI[match.category] or "[" .. match.category .. "]"
-            local line = category .. " " .. match.original .. " = " .. match.converted
-            table.insert(lines, line)
-        end
-        return table.concat(lines, "\n")
-    else
-        return "Nothing to convert."
-    end
+    self.has_emoji_font = hasEmojiFont()
 end
 
 function Units:addToHighlightDialog()
@@ -65,7 +44,7 @@ function Units:addToHighlightDialog()
                     Device.input.setClipboardText(text)
                 end
 
-                UIManager:show(InfoMessage:new{ text = convert(text) })
+                UIManager:show(InfoMessage:new{ text = units.convert(text, self.has_emoji_font) })
                 this:onClose(false)
             end,
         }
@@ -77,7 +56,7 @@ function Units:addToMainMenu(menu_items)
         text = _("Convert units from clipboard"),
         callback = function()
             local text = util.cleanupSelectedText(Device.input.getClipboardText())
-            UIManager:show(InfoMessage:new{ text = convert(text) })
+            UIManager:show(InfoMessage:new{ text = units.convert(text, self.has_emoji_font) })
         end,
     }
 end
