@@ -53,8 +53,12 @@ Install [Noto Emoji][] and enable it in UI fallback fonts.
 
 > Is this actively maintained? Do you accept contributions?
 
-Not really, I don't want more features, and
-I don't intend to change the conversion logic
+Somewhat.
+The `xray_units.lua` file from [xray.koplugin][] is automatically updated weekly.
+There are tests checking its API is still compatible with this plugin.
+
+Don't expect many updates to this plugin itself, however.
+I don't want more features, and I don't intend to change the conversion logic
 which is reused verbatim from [xray.koplugin][].
 Conversion bugs need to be fixed there first, then it can be updated here.
 
