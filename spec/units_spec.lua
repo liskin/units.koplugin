@@ -1,0 +1,10 @@
+describe("xray_units", function()
+    require("settings")
+    local xray_units = require("xray_units")
+
+    it("finds some measurements", function()
+        local matches = xray_units.detectMeasurements("1 pint")
+        assert.truthy(matches)
+        assert.truthy(#matches > 0)
+    end)
+end)

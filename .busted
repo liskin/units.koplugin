@@ -1,0 +1,6 @@
+return {
+    _all = {
+        lua = "luajit",
+        lpath = "units.koplugin/?.lua;spec/support/?.lua",
+    },
+}
